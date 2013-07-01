@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+    <!--
+         I do not use annotations since it's much easier to configure test environment for API using xmls. But WITH annotation-config
+         It's better to use different files in real life but since it's an example - we go with just one config.
+    -->
+
+    <!-- Enabling annotation config -->
+    <context:annotation-config/>
+
+    <!-- Adding validation bean to demonstrate it's being automatically wired -->
+    <bean id="validator" class="com.vvlasov.samples.jaxws.api.v1.validation.SimpleValidator"/>
+
+    <!-- Exposing the service -->
+    <bean id="serviceImpl" class="com.vvlasov.samples.jaxws.api.v1.ArithmeticServiceImpl"/>
+
+
+
+</beans>

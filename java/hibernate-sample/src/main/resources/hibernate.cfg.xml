@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:database/~/h2/ehcache-test</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"/>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+
+        <!-- Make sure we autocommit each time -->
+        <property name="connection.autocommit">true</property>
+
+        <!-- Configure the second level cache -->
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+
+        <property name="hibernate.generate_statistics">true</property>
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hbm2ddl.auto">create</property>
+
+        <!-- Instead of mapping resources we are gonna use annotations -->
+        <mapping class="com.othelle.samples.hibernate.dto.UserDataCollectionsFetch"/>
+        <mapping class="com.othelle.samples.hibernate.dto.UserDataCollections"/>
+        <mapping class="com.othelle.samples.hibernate.dto.UserDataEmbedded"/>
+
+        <mapping class="com.othelle.samples.hibernate.dto.Car"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Driver"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Engineer"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Sponsor"/>
+
+        <mapping class="com.othelle.samples.hibernate.dto.Animal"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Cat"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Fish"/>
+
+        <mapping class="com.othelle.samples.hibernate.dto.Shape"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Triangle"/>
+        <mapping class="com.othelle.samples.hibernate.dto.Rectangle"/>
+    </session-factory>
+
+</hibernate-configuration>
+

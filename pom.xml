@@ -19,7 +19,7 @@
     <modules>
         <module>java/jaxws-sample</module>
         <module>java/hibernate-ehcache</module>
-        <module>java/ehcache-hibernate-3rd</module>
+        <module>java/hibernate-sample</module>
     </modules>
 
     <dependencyManagement>

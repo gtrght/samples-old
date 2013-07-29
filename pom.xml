@@ -20,6 +20,7 @@
         <module>java/jaxws-sample</module>
         <module>java/hibernate-ehcache</module>
         <module>java/hibernate-sample</module>
+        <module>java/memcached-sample</module>
     </modules>
 
     <dependencyManagement>

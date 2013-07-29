@@ -47,6 +47,8 @@
         <mapping class="com.othelle.samples.hibernate.dto.Shape"/>
         <mapping class="com.othelle.samples.hibernate.dto.Triangle"/>
         <mapping class="com.othelle.samples.hibernate.dto.Rectangle"/>
+
+        <mapping class="com.othelle.samples.hibernate.dto.Human"/>
     </session-factory>
 
 </hibernate-configuration>

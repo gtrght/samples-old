@@ -5,6 +5,7 @@ import net.spy.memcached.CASMutator;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.transcoders.IntegerTranscoder;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,8 +47,18 @@ public class MemcachedSemaphoreSpyWay implements Semaphore {
         this.capacity = capacity;
 
         mutator = new CASMutator<Integer>(memcached, new IntegerTranscoder());
-        memcached.add(name, INITIAL_EXP, 0); //if there is no semaphore key - create one
+        //Usually you don't want to put such a code in your constructor. That's a bad idea.
+        //It's better to use @PostConstruct annotation and an appropriate IoC container.
+        init(memcached, name);
     }
+
+    @PostConstruct
+    protected void init(MemcachedClient memcached, String name) {
+        memcached.add(name, INITIAL_EXP, 0);//if there is no semaphore key - create one
+        // Since the key is going to expire - update the expiration period. Not supported in ASCII protocol
+        // memcached.touch(name, INITIAL_EXP);
+    }
+
 
     @Override
     public boolean acquire() {

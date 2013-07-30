@@ -53,6 +53,8 @@ public abstract class SemaphoreTest {
         //That's not a REAL test. Just a demonstration that everything seems (but not guaranteed) to be working
         final int threadCount = 500;
         final CountDownLatch latch = new CountDownLatch(threadCount);
+        //Never EVER start so much threads with new Thread(...).start(). Use ExecutorServices instead.
+        //This is done to introduce some unpredictability to the test.
         for (int i = 0; i < threadCount; i++) {
             new Thread() {
                 @Override

@@ -6,17 +6,16 @@ import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.transcoders.IntegerTranscoder;
 import net.spy.memcached.transcoders.Transcoder;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
  * author: v.vlasov
  */
 public class MemcachedSemaphoreBasic implements Semaphore {
-
-    //Note, this is NOT A REAL SEMAPHORE! We hard-code
+    //Note, this is NOT A REAL SEMAPHORE! We hard-code =)
     public static final int INITIAL_EXP = (int) TimeUnit.DAYS.toSeconds(20);
     public static final Transcoder<Integer> transcoder = new IntegerTranscoder();
-
 
     private MemcachedClient memcached;
     private String name;
@@ -27,7 +26,9 @@ public class MemcachedSemaphoreBasic implements Semaphore {
         this.memcached = memcached;
         this.name = name;
         this.maxCapacity = maxCapacity;
-        memcached.add(name, INITIAL_EXP, 0); //if there is no semaphore key - create one
+        //Usually you don't want to put such a code in your constructor. That's a bad idea.
+        //It's better to use @PostConstruct annotation and an appropriate IoC container.
+        init(memcached, name);
     }
 
     @Override
@@ -58,6 +59,13 @@ public class MemcachedSemaphoreBasic implements Semaphore {
         }
 
         return false;
+    }
+
+    @PostConstruct
+    protected void init(MemcachedClient memcached, String name) {
+        memcached.add(name, INITIAL_EXP, 0);//if there is no semaphore key - create one
+        // Since the key is going to expire - update the expiration period. Not supported in ASCII protocol
+        // memcached.touch(name, INITIAL_EXP);
     }
 
     @Override

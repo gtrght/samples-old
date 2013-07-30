@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component(value = "fibonachiService")
 public class CachedFibonachiService {
-    public static final String NAMESPACE = "CachedCalculations";
     public static final int EXPIRATION = 3600;
 
     @Autowired
@@ -24,7 +23,7 @@ public class CachedFibonachiService {
      * @param number the number in fibonachi sequence.
      * @return the fibo number
      */
-    @ReadThroughSingleCache(namespace = NAMESPACE, expiration = EXPIRATION)
+    @ReadThroughSingleCache(namespace = "com.othelle.samples.memcached.CachedFibonachiService.apply", expiration = EXPIRATION)
     public long apply(@ParameterValueKeyProvider int number) {
         if (number < 0) throw new IllegalArgumentException("Unsupported number provided: " + number);
         return apply0(number);
@@ -33,12 +32,14 @@ public class CachedFibonachiService {
 
     /**
      * Unfortunately there is no way to cache recursive calls. So we are using our own caching
+     * stats cachedump 1 100 to see cached values
      *
      * @param number
      * @return
      */
     protected long apply0(int number) {
-        String key = NAMESPACE + getClass().getName() + ".apply." + number;
+        //we are using the same key com.othelle.samples.memcached.CachedFibonachiService.apply
+        String key = "com.othelle.samples.memcached.CachedFibonachiService.apply:" + number;
         Object cachedValue = memcached.get(key);
         if (cachedValue != null) {
             return (Long) cachedValue;

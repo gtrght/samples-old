@@ -10,13 +10,10 @@ import java.io.IOException;
  */
 public class MemcachedSemaphoreBasicTest extends SemaphoreTest {
 
-    //I'm using memcached installed on my linux virtualbox. You probably would need to replace 169.254.192.223 with localhost
-    public static final String CONNECTION_STRING = "169.254.192.223:11211";
-
     @Override
     public Semaphore getSemaphore(int capacity) {
         try {
-            MemcachedClient client = new MemcachedClient(AddrUtil.getAddresses(CONNECTION_STRING));
+            MemcachedClient client = new MemcachedClient(AddrUtil.getAddresses(Config.CONNECTION_STRING));
             client.delete(SEMAPHORE_ID);
             return new MemcachedSemaphoreBasic(client, SEMAPHORE_ID, CAPACITY);
         } catch (IOException e) {

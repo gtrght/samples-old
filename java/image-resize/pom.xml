@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>image-resize</artifactId>
+    <packaging>jar</packaging>
+    <version>${parent.version}</version>
+    <properties>
+        <hornetq.version>2.3.1.Final</hornetq.version>
+    </properties>
+
+    <name>image-resize</name>
+    <url>http://maven.apache.org</url>
+
+    <parent>
+        <groupId>com.othelle.samples</groupId>
+        <artifactId>samples-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <finalName>image-resize</finalName>
+                    <descriptors>
+                        <descriptor>src/main/assembly/dep.xml</descriptor>
+                    </descriptors>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.othelle.samples.imageresize.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <!-- Manual tests are intended to be run only inside IDE -->
+                        <exclude>**/*ManualTest.java</exclude>
+                        <exclude>**/*ManualTests.java</exclude>
+                    </excludes>
+                    <!-- Only junit tests for now -->
+                    <testNGArtifactName>none:none</testNGArtifactName>
+                    <skipTests>false</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <repositories>
+        <repository>
+            <id>The Buzz Media Maven Repository</id>
+            <url>http://maven.thebuzzmedia.com</url>
+        </repository>
+    </repositories>
+</project>

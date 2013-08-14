@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -18,7 +17,7 @@ public abstract class SemaphoreTest {
     public static final int CAPACITY = 10;
     public static final String SEMAPHORE_ID = "semaphoreSpyWay";
 
-    private Semaphore semaphore;
+    protected Semaphore semaphore;
 
 
     public abstract Semaphore getSemaphore(int capacity);
@@ -47,7 +46,7 @@ public abstract class SemaphoreTest {
         assertThat(semaphore.acquire(), Matchers.equalTo(true));
     }
 
-    @Test
+    @Test(timeout = 100 * 1000) //100 seconds
     public void randomizedProcessesTest() throws InterruptedException {
         //Running batch of threads with a random sleep period attempting to acquire semaphore and checking the semaphore bounds
         //That's not a REAL test. Just a demonstration that everything seems (but not guaranteed) to be working
@@ -57,23 +56,29 @@ public abstract class SemaphoreTest {
         //This is done to introduce some unpredictability to the test.
         for (int i = 0; i < threadCount; i++) {
             new Thread() {
+                {
+                    setPriority(1 + ((int) (Math.random() * Thread.MAX_PRIORITY)));
+                }
+
                 @Override
                 public void run() {
                     try {
-                        while (!semaphore.acquire()) {
-                            try {
-                                int current = semaphore.current();
-                                if (current > CAPACITY || current < 0)
-                                    System.exit(-200);
+                        try {
+                            while (!semaphore.acquire()) {
+                                try {
+                                    int current = semaphore.current();
+                                    if (current > CAPACITY || current < 0)
+                                        System.exit(-200);
 
 
-                                Thread.sleep((long) (1000 * Math.random()));
-                            } catch (InterruptedException e) {
-                                System.out.println("Interrupted");
-                                return;
-                            } finally {
-                                semaphore.release();
+                                    Thread.sleep((long) (1000 * Math.random()));
+                                } catch (InterruptedException e) {
+                                    System.out.println("Interrupted");
+                                    return;
+                                }
                             }
+                        } finally {
+                            semaphore.release();
                         }
                         System.out.println("Completed");
                     } finally {
@@ -83,6 +88,6 @@ public abstract class SemaphoreTest {
                 }
             }.start();
         }
-        latch.await(100, TimeUnit.SECONDS);
+        latch.await();
     }
 }

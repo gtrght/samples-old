@@ -14,10 +14,10 @@ import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
  */
 @RunWith(value = SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:simple-spring-cache-beans.xml"})
-public class CachedFibonachiServiceTest {
+public class CachedFibonacciServiceTest {
 
     @Autowired
-    private CachedFibonachiService fibo;
+    private CachedFibonacciService fibo;
 
     @Test
     public void testCalculations() {

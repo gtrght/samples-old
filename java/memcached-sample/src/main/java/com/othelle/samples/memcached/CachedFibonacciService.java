@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * author: v.vlasov
  */
 @Component(value = "fibonachiService")
-public class CachedFibonachiService {
+public class CachedFibonacciService {
     public static final int EXPIRATION = 3600;
 
     @Autowired
@@ -23,7 +23,7 @@ public class CachedFibonachiService {
      * @param number the number in fibonachi sequence.
      * @return the fibo number
      */
-    @ReadThroughSingleCache(namespace = "com.othelle.samples.memcached.CachedFibonachiService.apply", expiration = EXPIRATION)
+    @ReadThroughSingleCache(namespace = "com.othelle.samples.memcached.CachedFibonacciService.apply", expiration = EXPIRATION)
     public long apply(@ParameterValueKeyProvider int number) {
         if (number < 0) throw new IllegalArgumentException("Unsupported number provided: " + number);
         return apply0(number);
@@ -38,8 +38,8 @@ public class CachedFibonachiService {
      * @return
      */
     protected long apply0(int number) {
-        //we are using the same key com.othelle.samples.memcached.CachedFibonachiService.apply
-        String key = "com.othelle.samples.memcached.CachedFibonachiService.apply:" + number;
+        //we are using the same key com.othelle.samples.memcached.CachedFibonacciService.apply
+        String key = "com.othelle.samples.memcached.CachedFibonacciService.apply:" + number;
         Object cachedValue = memcached.get(key);
         if (cachedValue != null) {
             return (Long) cachedValue;

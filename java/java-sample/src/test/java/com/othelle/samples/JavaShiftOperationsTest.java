@@ -8,6 +8,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
+ * The test to demonstrate what to expect from shifts
+ * Read more <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.19">Sun JLS</a>
  * author: Vasily Vlasov date: 12/2/13
  */
 public class JavaShiftOperationsTest {

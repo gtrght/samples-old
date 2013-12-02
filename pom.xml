@@ -17,6 +17,7 @@
     </properties>
 
     <modules>
+        <module>java/java-sample</module>
         <module>java/jaxws-sample</module>
         <module>java/hibernate-ehcache</module>
         <module>java/hibernate-sample</module>

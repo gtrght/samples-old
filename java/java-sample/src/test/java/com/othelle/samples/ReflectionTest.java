@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
@@ -73,9 +74,10 @@ public class ReflectionTest {
         assertThat(((Class) ((WildcardType) genericType.getActualTypeArguments()[0]).getUpperBounds()[0]), Matchers.equalTo(Object.class));
         assertThat((((WildcardType) genericType.getActualTypeArguments()[0]).getLowerBounds().length), Matchers.equalTo(0));
 
-        //interesting enough to work with <T> T method
-        method = aClass.getDeclaredMethod("getSomethingTyped");
+        //interesting enough to work with <T> T method with parameters
+        method = aClass.getDeclaredMethod("getSomethingTyped", Object.class);
         assertThat(method.getGenericReturnType(), Matchers.instanceOf(TypeVariable.class));
+        assertThat(method.getGenericParameterTypes()[0], Matchers.instanceOf(TypeVariable.class));
     }
 
     static class ClassToInspectTypes {
@@ -91,7 +93,7 @@ public class ReflectionTest {
             return null;
         }
 
-        public <T> T getSomethingTyped(){
+        public <T> T getSomethingTyped(T parameter){
             return null;
         }
     }
